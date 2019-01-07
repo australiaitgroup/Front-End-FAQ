@@ -17,6 +17,96 @@ _A fixed position element is positioned relative to the viewport, or the browser
 
 </details>
 
+<details>
+<summary>What is CSS BEM?</summary>
+
+The BEM methodology is a naming convention for CSS classes in order to keep CSS more maintainable by defining namespaces to solve scoping issues. BEM stands for Block Element Modifier which is an explanation for its structure. A Block is a standalone component that is reusable across projects and acts as a "namespace" for sub components (Elements). Modifiers are used as flags when a Block or Element is in a certain state or is different in structure or style.
+
+```css
+/* block component */
+.block {
+}
+
+/* element */
+.block__element {
+}
+
+/* modifier */
+.block__element--modifier {
+}
+```
+
+Here is an example with the class names on markup:
+
+```html
+<nav class="navbar">
+  <a href="/" class="navbar__link navbar__link--active"></a>
+  <a href="/" class="navbar__link"></a>
+  <a href="/" class="navbar__link"></a>
+</nav>
+```
+
+In this case, `navbar` is the Block, `navbar__link` is an Element that makes no sense outside of the `navbar` component, and `navbar__link--active` is a Modifier that indicates a different state for the `navbar__link` Element.
+
+Since Modifiers are verbose, many opt to use `is-*` flags instead as modifiers.
+
+```html
+<a href="/" class="navbar__link is-active"></a>
+```
+
+These must be chained to the Element and never alone however, or there will be scope issues.
+
+```css
+.navbar__link.is-active {
+}
+```
+
+</details>
+
+<details>
+<summary>What are the advantages of using CSS preprocessors?</summary>
+
+CSS preprocessors add useful functionality that native CSS does not have, and generally make CSS neater and more maintainable by enabling DRY (Don't Repeat Yourself) principles. Their terse syntax for nested selectors cuts down on repeated code. They provide variables for consistent theming (however, CSS variables have largely replaced this functionality) and additional tools like color functions (`lighten`, `darken`, `transparentize`, etc), mixins, and loops that make CSS more like a real programming language and gives the developer more power to generate complex CSS.
+
+
+#### Good to hear
+
+
+* They allow us to write more maintainable and scalable CSS
+* Some disadvantages of using CSS preprocessors (setup, re-compilation time can be slow etc.)
+
+
+##### Additional Links
+
+
+* [CSS Preprocessors](https://medium.com/@garyfagan/css-preprocessors-6f226fa16f27)
+
+</details>
+
+<details>
+<summary>What is the difference between `em` and `rem` units?</summary>
+
+Both `em` and `rem` units are based on the `font-size` CSS property. The only difference is where they inherit their values from.
+
+* `em` units inherit their value from the `font-size` of the parent element
+* `rem` units inherit their value from the `font-size` of the root element (`html`)
+
+In most browsers, the `font-size` of the root element is set to `16px` by default.
+
+
+#### Good to hear
+
+
+* Benefits of using `em` and `rem` units
+
+
+##### Additional Links
+
+
+* [CSS units for font-size: px | em | rem](https://medium.com/code-better/css-units-for-font-size-px-em-rem-79f7e592bb97)
+
+</details>
+
 ## HTML
 
 ## Javascript
@@ -36,6 +126,24 @@ _A fixed position element is positioned relative to the viewport, or the browser
 A pure function is a function that doesn't depend on and doesn't modify the states of variables out of its scope. Essentially, this means that a pure function will always return the same result given same parameters.
 
 </details>
+
+## Node
+
+<details>
+<summary>What is the event loop in Node.js?</summary>
+
+The event loop handles all async callbacks. Callbacks are queued in a loop, while other code runs, and will run one by one when the response for each one has been received.
+
+#### Good to hear
+
+* The event loop allows Node.js to perform non-blocking I/O operations, despite the fact that JavaScript is single-threaded
+
+##### Additional Links
+
+* [Node.js docs on event loop, timers and process.nextTick()](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)
+
+</details>
+
 
 ## React
 
