@@ -107,7 +107,250 @@ In most browsers, the `font-size` of the root element is set to `16px` by defaul
 
 </details>
 
+<details>
+<summary>What's the difference between "resetting" and "normalizing" CSS? Which would you choose, and why?</summary>
+
+* **Resetting** - Resetting is meant to strip all default browser styling on elements. For e.g. `margin`s, `padding`s, `font-size`s of all elements are reset to be the same. You will have to redeclare styling for common typographic elements.
+* **Normalizing** - Normalizing preserves useful default styles rather than "unstyling" everything. It also corrects bugs for common browser dependencies.
+
+I would choose resetting when I have a very customized or unconventional site design such that I need to do a lot of my own styling and do not need any default styling to be preserved.
+
+</details>
+
+<details>
+<summary> Describe `float`s and how they work.</summary>
+Float is a CSS positioning property. Floated elements remain a part of the flow of the page, and will affect the positioning of other elements (e.g. text will flow around floated elements), unlike `position: absolute` elements, which are removed from the flow of the page.
+
+The CSS `clear` property can be used to be positioned below `left`/`right`/`both` floated elements.
+
+If a parent element contains nothing but floated elements, its height will be collapsed to nothing. It can be fixed by clearing the float after the floated elements in the container but before the close of the container.
+
+The `.clearfix` hack uses a clever CSS pseudo selector (`:after`) to clear floats. Rather than setting the overflow on the parent, you apply an additional class `clearfix` to it. Then apply this CSS:
+
+```css
+.clearfix:after {
+  content: ' ';
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+```
+
+Alternatively, give `overflow: auto` or `overflow: hidden` property to the parent element which will establish a new block formatting context inside the children and it will expand to contain its children.
+
+</details>
+
+<details>
+<summary>Explain CSS sprites, and how you would implement them on a page or site.</summary>
+
+CSS sprites combine multiple images into one single larger image. It is a commonly-used technique for icons (Gmail uses it). How to implement it:
+
+1. Use a sprite generator that packs multiple images into one and generate the appropriate CSS for it.
+1. Each image would have a corresponding CSS class with `background-image`, `background-position` and `background-size` properties defined.
+1. To use that image, add the corresponding class to your element.
+
+**Advantages:**
+
+* Reduce the number of HTTP requests for multiple images (only one single request is required per spritesheet). But with HTTP2, loading multiple images is no longer much of an issue.
+* Advance downloading of assets that won't be downloaded until needed, such as images that only appear upon `:hover` pseudo-states. Blinking wouldn't be seen.
+
+
+</details>
+
+<details>
+<summary>What are the different ways to visually hide content (and make it available only for screen readers)?</summary>
+
+These techniques are related to accessibility (a11y).
+
+* `visibility: hidden`. However, the element is still in the flow of the page, and still takes up space.
+* `width: 0; height: 0`. Make the element not take up any space on the screen at all, resulting in not showing it.
+* `position: absolute; left: -99999px`. Position it outside of the screen.
+* `text-indent: -9999px`. This only works on text within the `block` elements.
+* Metadata. For example by using Schema.org, RDF, and JSON-LD.
+* WAI-ARIA. A W3C technical specification that specifies how to increase the accessibility of web pages.
+
+Even if WAI-ARIA is the ideal solution, I would go with the `absolute` positioning approach, as it has the least caveats, works for most elements and it's an easy technique.
+
+</details>
+
+<details>
+<summary>Are you familiar with styling SVG?
+</summary>
+
+Yes, there are several ways to color shapes (including specifying attributes on the object) using inline CSS, an embedded CSS section, or an external CSS file. Most SVG you'll find around the web use inline CSS, but there are advantages and disadvantages associated with each type.
+
+Basic coloring can be done by setting two attributes on the node: `fill` and `stroke`. `fill` sets the color inside the object and `stroke` sets the color of the line drawn around the object. You can use the same CSS color naming schemes that you use in HTML, whether that's color names (that is `red`), RGB values (that is `rgb(255,0,0)`), Hex values, RGBA values, etc.
+
+```html
+<rect x="10" y="10" width="100" height="100" stroke="blue" 
+  fill="purple" fill-opacity="0.5" stroke-opacity="0.8"/>
+```
+
+</details>
+
+
+<details>
+<summary>Can you give an example of an @media property other than screen?</summary>
+
+Yes, there are four types of @media properties (including _screen_):
+
+* `all` - for all media type devices
+* `print` - for printers
+* `speech` - for screenreaders that "reads" the page out loud
+* `screen` - for computer screens, tablets, smart-phones etc.
+
+Here is an example of `print` media type's usage:
+
+```css
+@media print {
+  body {
+    color: black;
+  }
+}
+```
+
+</details>
+
+
+<details>
+<summary>What are the advantages/disadvantages of using CSS preprocessors?</summary>
+
+**Advantages:**
+
+* CSS is made more maintainable.
+* Easy to write nested selectors.
+* Variables for consistent theming. Can share theme files across different projects.
+* Mixins to generate repeated CSS.
+* Splitting your code into multiple files. CSS files can be split up too but doing so will require an HTTP request to download each CSS file.
+
+**Disadvantages:**
+
+* Requires tools for preprocessing. Re-compilation time can be slow.
+
+</details>
+
+<details>
+<summary>Explain how a browser determines what elements match a CSS selector.</summary>
+
+This part is related to the above about writing efficient CSS. Browsers match selectors from rightmost (key selector) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector.
+
+For example with this selector `p span`, browsers firstly find all the `<span>` elements and traverse up its parent all the way up to the root to find the `<p>` element. For a particular `<span>`, as soon as it finds a `<p>`, it knows that the `<span>` matches and can stop its matching.
+
+</details>
+
+<details>
+<summary>Describe pseudo-elements and discuss what they are used for.</summary>
+
+A CSS pseudo-element is a keyword added to a selector that lets you style a specific part of the selected element(s). They can be used for decoration (`:first-line`, `:first-letter`) or adding elements to the markup (combined with `content: ...`) without having to modify the markup (`:before`, `:after`).
+
+* `:first-line` and `:first-letter` can be used to decorate text.
+* Used in the `.clearfix` hack as shown above to add a zero-space element with `clear: both`.
+* Triangular arrows in tooltips use `:before` and `:after`. Encourages separation of concerns because the triangle is considered part of styling and not really the DOM. It's not really possible to draw a triangle with just CSS styles without using an additional HTML element.
+* 
+</details>
+
+<details>
+<summary>What's the difference between `inline` and `inline-block`?</summary>
+
+I shall throw in a comparison with `block` for good measure.
+
+|                                      | `block`                                                                                     | `inline-block`                                                      | `inline`                                                                                                                                                                                                             |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Size                                 | Fills up the width of its parent container.                                                 | Depends on content.                                                 | Depends on content.                                                                                                                                                                                                  |
+| Positioning                          | Start on a new line and tolerates no HTML elements next to it (except when you add `float`) | Flows along with other content and allows other elements beside it. | Flows along with other content and allows other elements beside it.                                                                                                                                                  |
+| Can specify `width` and `height`     | Yes                                                                                         | Yes                                                                 | No. Will ignore if being set.                                                                                                                                                                                        |
+| Can be aligned with `vertical-align` | No                                                                                          | Yes                                                                 | Yes                                                                                                                                                                                                                  |
+| Margins and paddings                 | All sides respected.                                                                        | All sides respected.                                                | Only horizontal sides respected. Vertical sides, if specified, do not affect layout. Vertical space it takes up depends on `line-height`, even though the `border` and `padding` appear visually around the content. |
+| Float                                | -                                                                                           | -                                                                   | Becomes like a `block` element where you can set vertical margins and paddings.                                                                                                                                      |
+</details>
+
+
+<details>
+<summary>Have you played around with the new CSS Flexbox or Grid specs?</summary>
+
+Yes. Flexbox is mainly meant for 1-dimensional layouts while Grid is meant for 2-dimensional layouts.
+
+Flexbox solves many common problems in CSS, such as vertical centering of elements within a container, sticky footer, etc. Bootstrap and Bulma are based on Flexbox, and it is probably the recommended way to create layouts these days. Have tried Flexbox before but ran into some browser incompatibility issues (Safari) in using `flex-grow`, and I had to rewrite my code using `inline-blocks` and math to calculate the widths in percentages, it wasn't a nice experience.
+
+Grid is by far the most intuitive approach for creating grid-based layouts (it better be!) but browser support is not wide at the moment.
+
+</details>
+
 ## HTML
+
+<details>
+<summary>What does a DOCTYPE do?</summary>
+
+**DOCTYPE** is an abbreviation for **DOCument TYPE**.  
+A DOCTYPE is always associated to a **DTD** - for **Document Type Definition**.  
+
+A DTD defines how documents of a certain type should be structured (i.e. a `button` can contain a `span` but not a `div`), whereas a DOCTYPE declares what DTD a document *supposedly* respects (i.e. this document respects the HTML DTD).  
+
+For webpages, the DOCTYPE declaration is required. It is used to tell user agents what version of the HTML specifications your document respects.  
+Once a user agent has recognized a correct DOCTYPE, it will trigger the **no-quirks mode** matching this DOCTYPE for reading the document.  
+If a user agent doesn't recognize a correct DOCTYPE, it will trigger the **quirks mode**.
+
+The DOCTYPE declaration for the HTML5 standards is `<!DOCTYPE html>`.
+
+</details>
+
+<details>
+<summary>What kind of things must you be wary of when designing or developing for multilingual sites?</summary>
+
+* Use `lang` attribute in your HTML.
+* Directing users to their native language - Allow a user to change his country/language easily without hassle.
+* Text in images is not a scalable approach - Placing text in an image is still a popular way to get good-looking, non-system fonts to display on any computer. However, to translate image text, each string of text will need to have it's a separate image created for each language. Anything more than a handful of replacements like this can quickly get out of control.
+* Restrictive words/sentence length - Some content can be longer when written in another language. Be wary of layout or overflow issues in the design. It's best to avoid designing where the amount of text would make or break a design. Character counts come into play with things like headlines, labels, and buttons. They are less of an issue with free-flowing text such as body text or comments.
+* Be mindful of how colors are perceived - Colors are perceived differently across languages and cultures. The design should use color appropriately.
+* Formatting dates and currencies - Calendar dates are sometimes presented in different ways. Eg. "May 31, 2012" in the U.S. vs. "31 May 2012" in parts of Europe.
+* Do not concatenate translated strings - Do not do anything like `"The date today is " + date`. It will break in languages with different word order. Use a template string with parameters substitution for each language instead. For example, look at the following two sentences in English and Chinese respectively: `I will travel on {% date %}` and `{% date %} 我会出发`. Note that the position of the variable is different due to grammar rules of the language.
+* Language reading direction - In English, we read from left-to-right, top-to-bottom, in traditional Japanese, text is read up-to-down, right-to-left.
+
+</details>
+
+<details>
+<summary>What are `data-` attributes good for?</summary>
+
+Before JavaScript frameworks became popular, front end developers used `data-` attributes to store extra data within the DOM itself, without other hacks such as non-standard attributes, extra properties on the DOM. It is intended to store custom data private to the page or application, for which there are no more appropriate attributes or elements.
+
+These days, using `data-` attributes is not encouraged. One reason is that users can modify the data attribute easily by using inspect element in the browser. The data model is better stored within JavaScript itself and stay updated with the DOM via data binding possibly through a library or a framework.
+
+</details>
+
+<details>
+<summary>Describe the difference between a `cookie`, `sessionStorage` and `localStorage`.</summary>
+
+All the above-mentioned technologies are key-value storage mechanisms on the client side. They are only able to store values as strings.
+
+|                                        | `cookie`                                                 | `localStorage` | `sessionStorage` |
+| -------------------------------------- | -------------------------------------------------------- | -------------- | ---------------- |
+| Initiator                              | Client or server. Server can use `Set-Cookie` header     | Client         | Client           |
+| Expiry                                 | Manually set                                             | Forever        | On tab close     |
+| Persistent across browser sessions     | Depends on whether expiration is set                     | Yes            | No               |
+| Sent to server with every HTTP request | Cookies are automatically being sent via `Cookie` header | No             | No               |
+| Capacity (per domain)                  | 4kb                                                      | 5MB            | 5MB              |
+| Accessibility                          | Any window                                               | Any window     | Same tab         |
+</details>
+
+### Describe the difference between `<script>`, `<script async>` and `<script defer>`.
+<details>
+
+<summary>Explain</summary>
+
+* Scope safety: Until arrow functions, every new function defined its own this value (a new object in the case of a constructor, undefined in strict mode function calls, the base object if the function is called as an "object method", etc.). An arrow function does not create its own this, the this value of the enclosing execution context is used. 
+* Compactness: Arrow functions are easier to read and write.
+* Clarity: When almost everything is an arrow function, any regular function immediately sticks out for defining the scope. A developer can always look up the next-higher function statement to see what the thisObject is.
+
+</details>
+
+
+<details>
+<summary>Have you used different HTML templating languages before?</summary>
+
+Yes, Pug (formerly Jade), ERB, Slim, Handlebars, Jinja, Liquid, just to name a few. In my opinion, they are more or less the same and provide similar functionality of escaping content and helpful filters for manipulating the data to be displayed. Most templating engines will also allow you to inject your own filters in the event you need custom processing before display.
+
+</details>
 
 ## Javascript
 
