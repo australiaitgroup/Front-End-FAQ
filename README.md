@@ -1,6 +1,8 @@
 # Front-End-FAQ
 Get questions and answers from JR IT professional community
 
+For [Back End FAQ](https://github.com/australiaitgroup/Back-End-FAQ).
+
 ## Why we do this?
 Collect high-quality ansers from hot questions when immigrate to Australia and work in Australia.
 
@@ -369,24 +371,6 @@ A pure function is a function that doesn't depend on and doesn't modify the stat
 
 </details>
 
-## Node
-
-<details>
-<summary>What is the event loop in Node.js?</summary>
-
-The event loop handles all async callbacks. Callbacks are queued in a loop, while other code runs, and will run one by one when the response for each one has been received.
-
-#### Good to hear
-
-* The event loop allows Node.js to perform non-blocking I/O operations, despite the fact that JavaScript is single-threaded
-
-##### Additional Links
-
-* [Node.js docs on event loop, timers and process.nextTick()](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)
-
-</details>
-
-
 ## React
 
 <details>
@@ -714,6 +698,7 @@ Redux thunk is middleware that allows you to write action creators that return a
 
 ## Australia IT Professional Community
 
+[JR Academy | Code bootcamp](https://jiangren.com.au).
 [Sydney JR Academy | Code bootcamp](https://jiangren.com.au/city/sydney).
 [Melbourne JR Academy | Code bootcamp](https://jiangren.com.au/city/melbourne).
 [Brisbane JR Academy | Code bootcamp](https://jiangren.com.au/city/brisbane).
