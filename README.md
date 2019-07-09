@@ -333,10 +333,9 @@ All the above-mentioned technologies are key-value storage mechanisms on the cli
 | Accessibility                          | Any window                                               | Any window     | Same tab         |
 </details>
 
-### Describe the difference between `<script>`, `<script async>` and `<script defer>`.
 <details>
 
-<summary>Explain</summary>
+<summary>Describe the difference between script , script async and script defer. </summary>
 
 * Scope safety: Until arrow functions, every new function defined its own this value (a new object in the case of a constructor, undefined in strict mode function calls, the base object if the function is called as an "object method", etc.). An arrow function does not create its own this, the this value of the enclosing execution context is used. 
 * Compactness: Arrow functions are easier to read and write.
