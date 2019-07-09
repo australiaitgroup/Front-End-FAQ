@@ -398,6 +398,18 @@ React creates a virtual DOM. When state changes in a component it firstly runs a
 </details>
 
 <details>
+<summary>What are the major features of React?</summary>
+
+The major features of React are:
+
+* It uses **VirtualDOM** instead RealDOM considering that RealDOM manipulations are expensive.
+* Supports **server-side rendering**.
+* Follows *Unidirectional** data flow or data binding.
+* Uses **reusable/composable** UI components to develop the view.
+
+</details>
+
+<details>
 <summary>What are the advantages of using React?</summary>
 
 - It is easy to know how a component is rendered, you just need to look at the render function.
@@ -405,6 +417,65 @@ React creates a virtual DOM. When state changes in a component it firstly runs a
 - You can render React on the server-side. This enables improves SEO and performance.
 - It is easy to test.
 - You can use React with any framework (Backbone.js, Angular.js) as it is only a view layer.
+
+</details>
+
+<details>
+<summary>What is the difference between HTML and React event handling?</summary>
+
+1. In HTML, the event name should be in *lowercase*:
+
+ ```html
+ <button onclick='activateLasers()'>
+ ```
+
+ Whereas in React it follows *camelCase* convention:
+
+ ```jsx harmony
+ <button onClick={activateLasers}>
+ ```
+
+ 1. In HTML, you can return `false` to prevent default behavior:
+
+ ```html
+ <a href='#' onclick='console.log("The link was clicked."); return false;' />
+ ```
+
+ Whereas in React you must call `preventDefault()` explicitly:
+
+ ```javascript
+ function handleClick(event) {
+   event.preventDefault()
+   console.log('The link was clicked.')
+ }
+ ```
+
+
+</details>
+
+<details>
+<summary>How to create components in React?</summary>
+
+
+There are two possible ways to create a component.
+
+1. **Function Components:** This is the simplest way to create a component. Those are pure JavaScript functions that accept props object as first parameter and return React elements:
+
+    ```jsx harmony
+    function Greeting({ message }) {
+      return <h1>{`Hello, ${message}`}</h1> 
+    }
+    ```
+
+2. **Class Components:** You can also use ES6 class to define a component. The above function component can be written as:
+
+    ```jsx harmony
+    class Greeting extends React.Component {
+      render() {
+        return <h1>{`Hello, ${this.props.message}`}</h1>
+      }
+    }
+    ```
 
 </details>
 
@@ -427,6 +498,34 @@ Container components are more concerned with how things work. These components p
 </details>
 
 <details>
+<summary>What are Pure Components?</summary>
+
+ *`React.PureComponent`* is exactly the same as *`React.Component`* except that it handles the `shouldComponentUpdate()` method for you. When props or state changes, *PureComponent* will do a shallow comparison on both props and state. *Component* on the other hand won't compare current props and state to next out of the box. Thus, the component will re-render by default whenever `shouldComponentUpdate` is called.
+
+</details>
+
+<details>
+<summary>Why should we not update the state directly?</summary>
+
+If you try to update state directly then it won't re-render the component.
+
+```javascript
+//Wrong
+this.state.message = 'Hello world'
+```
+
+Instead use `setState()` method. It schedules an update to a component's state object. When state changes, the component responds by re-rendering.
+
+```javascript
+//Correct
+this.setState({ message: 'Hello World' })
+```
+
+**Note:** You can directly assign to the state object either in *constructor* or using latest javascript's class field declaration syntax.
+
+</details>
+
+<details>
 <summary>What is the difference between state and props?</summary>
 
 The state is a data structure that starts with a default value when a Component mounts. It may be mutated across time, mostly as a result of user events.
@@ -437,14 +536,24 @@ Props (short for properties) are a Component's configuration. They are received 
 
 <details>
 <summary>What is the difference of lifecycle methods in React?</summary>
+React 16.3+
 
-- `componentWillMount`- this is most commonly used for App configuration in your root component. 
-- `componentDidMount` - here you want to do all the setup you couldn’t do without a DOM, and start getting all the data you need. Also if you want to set up eventListeners etc. this lifecycle hook is a good place to do that.
-- `componentWillReceiveProps` - this lifecyclye acts on particular prop changes to trigger state transitions.
-- `shouldComponentUpdate` - if you’re worried about wasted renders `shouldComponentUpdate` is a great place to improve performance as it allows you to prevent a rerender if component receives new `prop`. `shouldComponentUpdate` should always return a boolean and based on what this is will determine if the component is rerendered or not.
-- `componentWillUpdate` - rarely used. It can be used instead of `componentWillReceiveProps` on a component that also has `shouldComponentUpdate` (but no access to previous props).
-- `componentDidUpdate` - also commonly used to update the DOM in response to prop or state changes.
-- `componentWillUnmount` - here you can cancel any outgoing network requests, or remove all event listeners associated with the component.
+- **getDerivedStateFromProps:** Invoked right before calling `render()` and is invoked on *every* render. This exists for rare use cases where you need derived state. Worth reading [if you need derived state](https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html).
+- **componentDidMount:** Executed after first rendering and here all AJAX requests, DOM or state updates, and set up event listeners should occur.
+- **shouldComponentUpdate:** Determines if the component will be updated or not. By default it returns `true`. If you are sure that the component doesn't need to render after state or props are updated, you can return false value. It is a great place to improve performance as it allows you to prevent a re-render if component receives new prop.
+- **getSnapshotBeforeUpdate:** Executed right before rendered output is committed to the DOM. Any value returned by this will be passed into `componentDidUpdate()`. This is useful to capture information from the DOM i.e. scroll position.
+- **componentDidUpdate:** Mostly it is used to update the DOM in response to prop or state changes. This will not fire if `shouldComponentUpdate()` returns `false`.
+- **componentWillUnmount** It will be used to cancel any outgoing network requests, or remove all event listeners associated with the component.
+
+Before 16.3
+
+- **componentWillMount:** Executed before rendering and is used for App level configuration in your root component.
+- **componentDidMount:** Executed after first rendering and here all AJAX requests, DOM or state updates, and set up event listeners should occur.
+- **componentWillReceiveProps:** Executed when particular prop updates to trigger state transitions.
+- **shouldComponentUpdate:** Determines if the component will be updated or not. By default it returns `true`. If you are sure that the component doesn't need to render after state or props are updated, you can return false value. It is a great place to improve performance as it allows you to prevent a re-render if component receives new prop.
+- **componentWillUpdate:** Executed before re-rendering the component when there are props & state changes confirmed by `shouldComponentUpdate()` which returns true.
+- **componentDidUpdate:** Mostly it is used to update the DOM in response to prop or state changes.
+- **componentWillUnmount:** It will be used to cancel any outgoing network requests, or remove all event listeners associated with the component.
 
 </details>
 
@@ -496,6 +605,33 @@ Because `this.props` and `this.state` may be updated asynchronously, you should 
 
 You can use property initializers to correctly bind callbacks. This is enabled by default in create react app.
 you can use an arrow function in the callback. The problem here is that a new callback is created each time the component renders.
+
+</details>
+
+<details>
+<summary>What are stateless components?</summary>
+
+If the behaviour is independent of its state then it can be a stateless component. You can use either a function or a class for creating stateless components. But unless you need to use a lifecycle hook in your components, you should go for function components. There are a lot of benefits if you decide to use function components here; they are easy to write, understand, and test, a little faster, and you can avoid the `this` keyword altogether.
+
+</details>
+
+<details>
+<summary>What are stateful components?</summary>
+
+If the behaviour of a component is dependent on the *state* of the component then it can be termed as stateful component. These *stateful components* are always *class components* and have a state that gets initialized in the `constructor`.
+
+```javascript
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { count: 0 }
+  }
+
+  render() {
+    // ...
+  }
+}
+```
 
 </details>
 
