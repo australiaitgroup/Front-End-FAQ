@@ -484,7 +484,94 @@ Returning null from a component's render method does not affect the firing of th
 
 </details>
 
+<details>
+<summary>Why is it advised to pass a callback function to setState as opposed to an object?</summary>
+
+Because `this.props` and `this.state` may be updated asynchronously, you should not rely on their values for calculating the next state.
+
+</details>
+
+<details>
+<summary>What is the alternative of binding `this` in the constructor?</summary>
+
+You can use property initializers to correctly bind callbacks. This is enabled by default in create react app.
+you can use an arrow function in the callback. The problem here is that a new callback is created each time the component renders.
+
+</details>
+
+<details>
+<summary>How would you prevent a component from rendering?</summary>
+
+Returning null from a component's render method means nothing will be displayed, but it does not affect the firing of the component's lifecycle methods. 
+
+If the amount of times the component re-renders is an issue, there are two options available. Manually implementing a check in the `shouldComponentUpdate` lifecycle method hook. 
+```
+shouldComponentUpdate(nextProps, nextState){
+  // Do some check here
+  return resultOFCheckAsBoolean
+}
+```
+
+Or using React.PureComponent instead of React.Component
+React.PureComponent implements `shouldComponentUpdate()` with a shallow prop and state comparison. This enables you to avoid re-rendering the component with the same props and state.
+
+</details>
+
+<details>
+<summary>When rendering a list what is a key and what is it's purpose?</summary>
+
+Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity. The best way to pick a key is to use a string that uniquely identifies a list item among its siblings. Most often you would use IDs from your data as keys. When you don't have stable IDs for rendered items, you may use the item index as a key as a last resort. It is not recommend to use indexes for keys if the items can reorder, as that would be slow. 
+
+</details>
+
+<details>
+<summary>What is JSX?</summary>
+
+JSX is a syntax extension to JavaScript and comes with the full power of JavaScript. JSX produces React "elements". You can embed any JavaScript expression in JSX by wrapping it in curly braces. After compilation, JSX expressions become regular JavaScript objects. This means that you can use JSX inside of if statements and for loops, assign it to variables, accept it as arguments, and return it from functions:
+
+</details>
+
 ### Redux
+
+<details>
+<summary>What is redux?</summary>
+
+The basic idea of redux is that the entire application state is kept in a single store. The store is simply a javascript object. The only way to change the state is by sending actions from your application and then writing reducers for these actions that modify the state. The entire state transition is kept inside reducers and should not have any side-effects.
+
+</details>
+
+<details>
+<summary>What is a store in redux?</summary>
+
+The store is a javascript object that holds application state. Along with this it also has the following responsibilities:
+- Allows access to state via `getState()`;
+- Allows state to be updated via `dispatch(action)`;
+- Registers listeners via `subscribe(listener)`;
+- Handles unregistering of listeners via the function returned by `subscribe(listener)`.
+
+</details>
+
+<details>
+<summary>What is an action?</summary>
+
+Actions are plain javascript objects. They must have a type indicating the type of action being performed. In essence, actions are payloads of information that send data from your application to your store. 
+
+</details>
+
+<details>
+<summary>What is a reducer?</summary>
+
+A reducer is simply a pure function that takes the previous state and an action, and returns the next state.
+
+</details>
+
+<details>
+<summary>What is Redux Thunk used for?</summary>
+
+Redux thunk is middleware that allows you to write action creators that return a function instead of an action. The thunk can then be used to delay the dispatch of an action if a certain condition is met. This allows you to handle the asynchronous dispatching of actions.
+
+</details>
+
 
 
 ## Angular
