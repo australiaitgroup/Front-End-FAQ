@@ -698,7 +698,7 @@ Redux thunk is middleware that allows you to write action creators that return a
 
 ## Australia IT Professional Community
 
-[JR Academy | Code bootcamp](https://jiangren.com.au).
+[JR Academy | Official Website](https://jiangren.com.au).
 [Sydney JR Academy | Code bootcamp](https://jiangren.com.au/city/sydney).
 [Melbourne JR Academy | Code bootcamp](https://jiangren.com.au/city/melbourne).
 [Brisbane JR Academy | Code bootcamp](https://jiangren.com.au/city/brisbane).
